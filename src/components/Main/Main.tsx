@@ -8,13 +8,20 @@ import {
   Route,
 } from 'react-router-dom';
 import styled from 'styled-components';
+import {
+  gql,
+  useQuery,
+} from '@apollo/client';
+
 import MainContext from '../../context/MainContext';
 import Home from '../Home';
 import {
   initialState,
   reducer,
 } from '../../context/reducer';
-import data from './data';
+import {
+  Dessert,
+} from '../../context/types';
 
 const MainStyle = styled.main.attrs({
   className: 'ml-auto mr-auto pl3 pr3 pt4 bg-near-white min-vh-100',
@@ -25,19 +32,31 @@ const SubStyle = styled.main.attrs({
 })``
 
 const Main = () => {
+  const { error, data } = useQuery<{
+    desserts: Array<Dessert>;
+  }>(gql`
+     query Desserts {
+       desserts {
+         id
+         name
+         calories
+         fat
+         protein
+         carbs
+       }
+     }
+  `);
+
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [stateData, setStateData] = useState({
-    desserts: data,
-  });
 
   useEffect(() => {
-    if (stateData) {
+    if (data && !error) {
       dispatch({
         type: 'DESSERT_RECEIVED',
-        payload: stateData.desserts,
+        payload: data.desserts,
       });
     }
-  }, [stateData]);
+  }, [data, dispatch, error]);
 
    return(
     <MainStyle>

@@ -65,9 +65,11 @@ class Dessert {
 
 }
 
+const dessert = new Dessert();
+
 const resolvers = {
   Query: {
-    desserts: () => Dessert.getAllDesserts(),
+    desserts: () => dessert.getAllDesserts(),
   },
 };
 
