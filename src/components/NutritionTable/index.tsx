@@ -26,6 +26,10 @@ const NutritionThSpanStyle = styled.span.attrs({
   className: 'flex items-center justify-center',
 })``;
 
+const NutritionThSpanSortStyle = styled.span.attrs({
+  className: 'material-icons',
+})``;
+
 const NutritionTBodyStyle = styled.tbody.attrs({
   className: 'lh-copy',
   'data-testid': 'table-body'
@@ -65,26 +69,41 @@ const NutritionTable = () => {
         : 1
     );
 
-  const headerTextArray = [
-    <input
+  const headerElementsArray = [
+    ['input', <input
       type='checkbox'
       value='selectAll'
-    />,
-    `Dessert (100g serving)`,
-    `Calories`,
-    `Fat (g)`,
-    `Carbs (g)`,
-    `Protein (g)`,
+    />, false],
+    ['name', `Dessert (100g serving)`, true],
+    ['calories', `Calories`, true],
+    ['fat', `Fat (g)`, true],
+    ['carb', `Carbs (g)`, true],
+    ['protein', `Protein (g)`, true],
   ];
+
+  const handleSort = (on: Keys) => {
+    setStateSort((state) => {
+      return {
+        on,
+        direction: state.direction === 'asc' ? 'desc' : 'asc',
+      };
+    });
+  };
 
   return(
     <NutritionTableStyle>
       <NutritionTHeadStyle>
         <NutritionTHeadTrStyle>
-          {headerTextArray.map((element: any, index: number) =>
-            <NutritionThStyle key={index}>
+          {headerElementsArray.map((element: any, index: number) =>
+            <NutritionThStyle
+              key={index}
+              onClick={() => handleSort(element[0])}
+            >
               <NutritionThSpanStyle>
-                {element}
+                {element[1]}
+                {element[2] && <NutritionThSpanSortStyle>
+                  import_export
+                </NutritionThSpanSortStyle>}
               </NutritionThSpanStyle>
              </NutritionThStyle>
           )}
@@ -104,16 +123,16 @@ const NutritionTable = () => {
               {dessert.name}
             </NutritionTBodyTdStyle>
             <NutritionTBodyTdStyle>
-              {dessert.nutritionInfo.calories}
+              {dessert.calories}
             </NutritionTBodyTdStyle>
             <NutritionTBodyTdStyle>
-              {dessert.nutritionInfo.fat}
+              {dessert.fat}
             </NutritionTBodyTdStyle>
             <NutritionTBodyTdStyle>
-              {dessert.nutritionInfo.carb}
+              {dessert.carb}
             </NutritionTBodyTdStyle>
             <NutritionTBodyTdStyle>
-              {dessert.nutritionInfo.protein}
+              {dessert.protein}
             </NutritionTBodyTdStyle>
           </NutritionTBodyTrStyle>
         )}

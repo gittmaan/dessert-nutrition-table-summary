@@ -5,10 +5,8 @@ export type Dessert = {
 } & {
     name: string;
     id?: string;
-    nutritionInfo: {
-      calories: number,
-      fat: number,
-      carb: number,
-      protein: number,
-    }
+    calories: number,
+    fat: number,
+    carb: number,
+    protein: number,
 };
