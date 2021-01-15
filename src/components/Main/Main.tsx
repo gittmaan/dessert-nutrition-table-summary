@@ -1,7 +1,6 @@
 import React, {
   useReducer,
   useEffect,
-  useState,
 } from 'react';
 import {
   BrowserRouter as Router,
