@@ -10,7 +10,7 @@ interface DialogProps {
   toggler: any,
 }
 const DialogStyle = styled.div.attrs({
-  className: 'fixed flex items-center justify-center'
+  className: 'fixed flex items-center justify-center bg-light-gray'
 })`
   left: 0;
   right: 0;

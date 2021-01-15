@@ -76,7 +76,8 @@ const NewDessert = () => {
         />
       </form>
       <Button
-        className='bg-green white w-100 justify-center'
+        // ref https://roperzh.github.io/tachyons-cheatsheet/
+        className='bg-dark-green white w-100 justify-center'
         icon='done'
       >
         SUBMIT
