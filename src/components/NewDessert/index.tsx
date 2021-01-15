@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
 import Input from '../Input';
+import useContextEntities from '../../context/mainContextEntities';
 
 const NewDessertStyle = styled.div.attrs({
   className: 'bg-white pa5'
@@ -22,8 +23,17 @@ const NewDessert = () => {
     protein: 0,
   });
 
+  const {
+    dispatch
+  } = useContextEntities();
+  console.warn('NewDessert dessert', dessert);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    console.warn('handleSubmit called');
     event.preventDefault();
+    dispatch({
+      type: 'DESSERT_ADDED',
+      payload: dessert,
+    })
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +53,7 @@ const NewDessert = () => {
         <span className='material-icons-outlined'>warning_</span>
         Please fill all details before you submit
       </NewDessertHeaderStyle>
-      <form onSubmit={handleSubmit}>
+      <form>
         <Input
           label='Dessert Name'
           name='name'
@@ -79,6 +89,7 @@ const NewDessert = () => {
         // ref https://roperzh.github.io/tachyons-cheatsheet/
         className='bg-dark-green white w-100 justify-center'
         icon='done'
+        onClick={handleSubmit}
       >
         SUBMIT
       </Button>

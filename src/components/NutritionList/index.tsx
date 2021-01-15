@@ -34,7 +34,7 @@ const NutritionList = () => {
   const handleAddNew = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowDialog(true);
   };
-  console.warn('NutritionList:selectedCount', selectedCount);
+
   return(
     <NutritionListStyle>
       <NutritionListTopRowStyle>

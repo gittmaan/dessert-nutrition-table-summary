@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import MainContext from './MainContext';
 
-const mainContextEntities = () => {
+const useContextEntities = () => {
   const {
     dispatch,
     state,
@@ -13,4 +13,4 @@ const mainContextEntities = () => {
   };
 };
 
-export default mainContextEntities;
+export default useContextEntities;
