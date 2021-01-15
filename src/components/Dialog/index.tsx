@@ -19,7 +19,7 @@ const DialogStyle = styled.div.attrs({
 `;
 
 const DialogContentStyle = styled.div.attrs({
-  className: 'relative bg-white pa3 mw6 w-100 br3'
+  className: 'relative bg-white pa3 mw7 w-100 br3'
 })``;
 
 const dialogContainer = document.getElementById('dialog-container');

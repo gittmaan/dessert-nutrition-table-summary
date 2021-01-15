@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
 import Input from '../Input';
 import useContextEntities from '../../context/mainContextEntities';
 
 const NewDessertStyle = styled.div.attrs({
-  className: 'bg-white pa5'
+  className: 'bg-white pa4'
 })`
 `;
 
@@ -14,7 +17,13 @@ const NewDessertHeaderStyle = styled.div.attrs({
 })`
 `;
 
+const NewDessertInformationStyle = styled.p.attrs({
+  className: 'ba b--light-blue pa2 mb1 blue bg-lightest-blue'
+})`
+`;
+
 const NewDessert = () => {
+  const [showInformation, setShowInformation] = useState(true);
   const [dessert, setDessert] = useState({
     name: '',
     calories: 0,
@@ -26,7 +35,7 @@ const NewDessert = () => {
   const {
     dispatch
   } = useContextEntities();
-  console.warn('NewDessert dessert', dessert);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     console.warn('handleSubmit called');
     event.preventDefault();
@@ -47,8 +56,16 @@ const NewDessert = () => {
     });
   };
 
+  useEffect(() => {
+    setTimeout(() => setShowInformation(false), 5000);
+  }, [setShowInformation]);
+
   return (
     <NewDessertStyle>
+      {showInformation && <NewDessertInformationStyle>
+        <span className='material-icons-outlined'>information_</span>
+         To close this Dialog, hit Esc Key!
+      </NewDessertInformationStyle>}
       <NewDessertHeaderStyle>
         <span className='material-icons-outlined'>warning_</span>
         Please fill all details before you submit
