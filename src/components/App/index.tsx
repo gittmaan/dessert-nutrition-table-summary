@@ -7,7 +7,7 @@ import {
 
 import Main from '../Main/Main';
 
-import './App.css';
+import '../App.css';
 
 const apolloClient = new ApolloClient({
     uri: 'http://localhost:4000',
