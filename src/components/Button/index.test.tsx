@@ -1,29 +1,29 @@
-import {
-  cleanup,
-  fireEvent,
-  render,
-  screen,
-} from '@testing-library/react';
+import * as React from 'react';
+import { shallow, configure } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
+configure({ adapter: new Adapter() });
+
 import Button from './index';
 
-afterEach(cleanup)
+describe('Button', () => {
+  let wrapper;
+  const onClick = jest.fn();
 
-test('renders button correctly', () => {
-  render(<Button>Click me!</Button>);
-  const button = screen.getByText(/Click me!/i);
-  expect(button).toBeInTheDocument();
-});
+  beforeAll(() => {
+    wrapper = shallow(<Button onClick={onClick}>Click me!</Button>);
+  });
 
-test('onClick works', () => {
-    const onClick = jest.fn();
-    render(<Button onClick={onClick}>Click me!</Button>)
-    const button = screen.getByText(/Click me!/i);
-    fireEvent.click(button);
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('render Button properly', () => {
+    expect(wrapper.text()).toBe('Click me!');
+  });
+
+  it('click event', () => {
+    wrapper.simulate('click');
     expect(onClick).toBeCalled();
-})
+  });
 
-test('renders icon', () => {
-    const { getByTestId } = render(<Button icon={'done'}>Click me!</Button>)
-    const icon = getByTestId('icon')
-    expect(icon).toBeInTheDocument();
-})
+});
