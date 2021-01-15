@@ -3,8 +3,12 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
+import NutritionList from '../NutritionList';
 
-const HomeStyle = styled.div.attrs({
+const HomeStyle = styled.div`
+`;
+
+const HeadStyle = styled.div.attrs({
   className: 'flex',
 })``
 
@@ -19,16 +23,19 @@ const Home = () => {
 
   return(
     <HomeStyle>
-      <HeadingStyle>
-        Nutrition List
-      </HeadingStyle>
-      <Button
-        className='bg-green white self-center'
-        icon='refresh'
-        onClick={handleReset}
-       >
-        RESET DATA
-      </Button>
+      <HeadStyle>
+        <HeadingStyle>
+          Nutrition List
+        </HeadingStyle>
+        <Button
+          className='bg-green white self-center'
+          icon='refresh'
+          onClick={handleReset}
+         >
+          RESET DATA
+        </Button>
+      </HeadStyle>
+      <NutritionList />
     </HomeStyle>
   );
 };
