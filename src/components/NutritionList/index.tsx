@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Button from '../Button';
 import NutritionTable from '../NutritionTable';
 import Dialog from '../Dialog';
+import NewDessert from '../NewDessert';
 
 const NutritionListStyle = styled.div`
 `;
@@ -51,7 +52,7 @@ const NutritionList = () => {
       {showDialog && <Dialog
         toggler={toggler}
       >
-        Hellow
+        <NewDessert />
       </Dialog>}
     </NutritionListStyle>
   );
