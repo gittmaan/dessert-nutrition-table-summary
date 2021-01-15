@@ -1,5 +1,6 @@
 import {
   useContext,
+  useEffect,
   useState,
 } from 'react';
 import styled from 'styled-components';
@@ -47,7 +48,15 @@ interface StateSort {
   direction: 'asc' | 'desc';
 }
 
-const NutritionTable = () => {
+interface NutritionTableProps {
+  selectedCount: any,
+  onSelectedCountChange: any,
+};
+
+const NutritionTable = ({
+  selectedCount,
+  onSelectedCountChange
+}: NutritionTableProps) => {
   const {
     state
   } = useContext(MainContext);
@@ -56,6 +65,8 @@ const NutritionTable = () => {
     on: 'name',
     direction: 'asc',
   });
+
+  const [selectedDesserts, setSelectedDesserts] = useState<{ [key: string]: any }>({});
 
   const sortedDesserts = state.desserts
     .slice()
@@ -73,6 +84,30 @@ const NutritionTable = () => {
     ['input', <input
       type='checkbox'
       value='selectAll'
+      checked={
+        Object
+          .keys(selectedDesserts)
+          .every((key) => selectedDesserts[key])
+        && Object
+          .keys(selectedDesserts).length === state.desserts.length
+      }
+      onChange={(event) => {
+        const {
+          target: {
+            checked
+          } = {}
+        } = event;
+
+        setSelectedDesserts(() => state
+          .desserts
+          .reduce((accumulator, dessert) => ({
+            ...accumulator,
+            [dessert.id ? dessert.id :  '']: checked,
+            }),
+            {}
+          )
+        );
+      }}
     />, false],
     ['name', `Dessert (100g serving)`, true],
     ['calories', `Calories`, true],
@@ -90,6 +125,10 @@ const NutritionTable = () => {
     });
   };
 
+  useEffect(() => {
+    onSelectedCountChange(Object.keys(selectedDesserts).filter((key) => selectedDesserts[key]).length);
+  }, [selectedDesserts, onSelectedCountChange]);
+
   return(
     <NutritionTableStyle>
       <NutritionTHeadStyle>
@@ -97,7 +136,7 @@ const NutritionTable = () => {
           {headerElementsArray.map((element: any, index: number) =>
             <NutritionThStyle
               key={index}
-              onClick={() => handleSort(element[0])}
+              onClick={() => (element[2] && handleSort(element[0]))}
             >
               <NutritionThSpanStyle>
                 {element[1]}
@@ -117,6 +156,22 @@ const NutritionTable = () => {
                 data-testid='selector-box'
                 className='mr2'
                 type='checkbox'
+                value={dessert.id}
+                checked={
+                  !!selectedDesserts[dessert.id ? dessert.id : '']
+                }
+                onChange={(event) => {
+                  const {
+                    target: {
+                      checked
+                    } = {}
+                  } = event;
+
+                  setSelectedDesserts(() => ({
+                    ...selectedDesserts,
+                    [dessert.id ? dessert.id : '']: checked,
+                  }));
+                }}
               />
             </NutritionTBodyTdStyle>
             <NutritionTBodyTdStyle>

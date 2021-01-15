@@ -1,5 +1,5 @@
 import {
-   useState,
+  useState,
 } from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
@@ -14,8 +14,14 @@ const NutritionListTopRowStyle = styled.div.attrs({
   className: 'pv3 ph2 bg-washed-red flex',
 })``
 
+const NutritionListTopRowSelectedStyle = styled.p.attrs({
+  className: 'dark-pink b flex-auto',
+})``
+
 const NutritionList = () => {
   const [showDialog, setShowDialog] = useState(false);
+  const [selectedCount, setSelectedCount] = useState(0);
+  const [selectedDesserts, setSelectedDesserts] = useState<{ [key: string]: boolean }>({});
 
   const toggler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (showDialog) {
@@ -28,10 +34,13 @@ const NutritionList = () => {
   const handleAddNew = (event: React.ChangeEvent<HTMLInputElement>) => {
     setShowDialog(true);
   };
-
+  console.warn('NutritionList:selectedCount', selectedCount);
   return(
     <NutritionListStyle>
       <NutritionListTopRowStyle>
+        <NutritionListTopRowSelectedStyle>
+          {selectedCount} Selected
+        </NutritionListTopRowSelectedStyle>
         <Button
           className='bg-white green mh1'
           icon='add'
@@ -42,13 +51,16 @@ const NutritionList = () => {
         <Button
           className='bg-white red mh1'
           icon='delete'
-          disabled={true}
+          disabled={!selectedCount}
           data-testid='delete-button'
         >
             DELETE
         </Button>
       </NutritionListTopRowStyle>
-      <NutritionTable />
+      <NutritionTable
+        selectedCount={selectedCount}
+        onSelectedCountChange={setSelectedCount}
+      />
       {showDialog && <Dialog
         toggler={toggler}
       >
