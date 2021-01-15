@@ -1,6 +1,10 @@
+import {
+   useState,
+} from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
 import NutritionTable from '../NutritionTable';
+import Dialog from '../Dialog';
 
 const NutritionListStyle = styled.div`
 `;
@@ -10,12 +14,27 @@ const NutritionListTopRowStyle = styled.div.attrs({
 })``
 
 const NutritionList = () => {
+  const [showDialog, setShowDialog] = useState(false);
+
+  const toggler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (showDialog) {
+      setShowDialog(false)
+    } else {
+      setShowDialog(true)
+    }
+  };
+
+  const handleAddNew = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setShowDialog(true);
+  };
+
   return(
     <NutritionListStyle>
       <NutritionListTopRowStyle>
         <Button
           className='bg-white green mh1'
           icon='add'
+          onClick={handleAddNew}
          >
           ADD NEW
         </Button>
@@ -29,6 +48,11 @@ const NutritionList = () => {
         </Button>
       </NutritionListTopRowStyle>
       <NutritionTable />
+      {showDialog && <Dialog
+        toggler={toggler}
+      >
+        Hellow
+      </Dialog>}
     </NutritionListStyle>
   );
 };
