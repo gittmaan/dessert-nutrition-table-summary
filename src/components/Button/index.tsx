@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-const classList: { [key:string]: string} = {
+const baseClasses: { [key:string]: string} = {
     primary: 'br2 pa3 outline-0 bn-l b flex items-center'
 };
 
@@ -25,11 +25,12 @@ const Button: React.FC<ButtonType> = ({
   type='primary',
   ...props
 }) => {
-  const classFinal = `${classList[type]} ${className}`;
+  const classFinal = `${baseClasses[type]} ${className} ${disabled ? 'o-50' : 'dim pointer'}`;
 
   return(
     <ButtonStyle
       className={classFinal}
+      disabled={disabled}
       { ...props }
     >
       {icon && <span
