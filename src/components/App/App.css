@@ -1,3 +1,9 @@
+@import 'tachyons';
+
+* {
+    font-family: 'Roboto Slab', serif;
+}
+
 .App {
   text-align: center;
 }
