@@ -49,13 +49,17 @@ interface StateSort {
 }
 
 interface NutritionTableProps {
-  selectedCount: any,
   onSelectedCountChange: any,
+  selectedCount: any,
+  selectedDesserts: any,
+  setSelectedDesserts: any,
 };
 
 const NutritionTable = ({
+  onSelectedCountChange,
   selectedCount,
-  onSelectedCountChange
+  selectedDesserts,
+  setSelectedDesserts,
 }: NutritionTableProps) => {
   const {
     state
@@ -65,8 +69,6 @@ const NutritionTable = ({
     on: 'name',
     direction: 'asc',
   });
-
-  const [selectedDesserts, setSelectedDesserts] = useState<{ [key: string]: any }>({});
 
   const sortedDesserts = state.desserts
     .slice()

@@ -62,6 +62,37 @@ class Dessert {
     return { id, ...dessert };
   }
 
+  deleteDessert({ dessertId }) {
+    console.log('dessertId', dessertId);
+    const deletedDessert = this
+      .data
+      .find((dessert) => dessert.id === dessertId);
+
+    console.log('deletedDessert', deletedDessert);
+
+    const newData = this
+      .data
+      .filter((dessert) => dessert.id !== dessertId);
+
+    this.data = newData;
+    return deletedDessert;
+  }
+
+  deleteDesserts({ dessertIds }) {
+    dessertIds.map((dessertId) => {
+      const newData = this
+        .data
+        .filter((dessert) => dessert.id !== dessertId);
+
+      this.data = newData;
+    });
+
+    return {
+      success: true,
+      message: 'Desserts have been deleted',
+    };
+  }
+
   getAllDesserts() {
     return this.data;
   }
@@ -70,6 +101,14 @@ class Dessert {
     return this.data.find((dessert) => {
       return dessert.id === dessertId;
     });
+  }
+
+  reset() {
+    this.data = [];
+    return {
+      success: true,
+      message: 'All data has been reset',
+    };
   }
 }
 
@@ -93,7 +132,7 @@ const resolvers = {
       console.log('deleteDesserts -> dessertIds', dessertIds)
       return dessertObj.deleteDesserts({ dessertIds });
     },
-    reset: () => dessert.reset(),
+    reset: () => dessertObj.reset(),
   }
 };
 

@@ -1,4 +1,8 @@
 import {
+  gql,
+  useMutation,
+} from '@apollo/client';
+import {
   useState,
 } from 'react';
 import styled from 'styled-components';
@@ -6,6 +10,7 @@ import Button from '../Button';
 import NutritionTable from '../NutritionTable';
 import Dialog from '../Dialog';
 import NewDessert from '../NewDessert';
+import useContextEntities from '../../context/mainContextEntities';
 
 const NutritionListStyle = styled.div`
 `;
@@ -35,6 +40,38 @@ const NutritionList = () => {
     setShowDialog(true);
   };
 
+  const [deleteDesserts] = useMutation(gql`
+    mutation deleteDesserts($dessertIds: [ID]!) {
+      deleteDesserts(dessertIds: $dessertIds) {
+        message
+        success
+      }
+    }
+  `);
+
+  const {
+    dispatch
+  } = useContextEntities();
+
+  const handleDelete = async () => {
+    const selectedDessertIds = Object.keys(selectedDesserts);
+
+    try {
+      const { data, errors } = await deleteDesserts({
+        variables: { dessertIds: selectedDessertIds },
+      });
+
+      if (data && !errors) {
+        dispatch({
+          type: 'DESSERT_DELETE',
+          payload: selectedDessertIds,
+        });
+      }
+    } catch (e) {
+      console.warn(e);
+    }
+  };
+
   return(
     <NutritionListStyle>
       <NutritionListTopRowStyle>
@@ -50,9 +87,10 @@ const NutritionList = () => {
         </Button>
         <Button
           className='bg-white red mh1'
-          icon='delete'
           disabled={!selectedCount}
+          icon='delete'
           data-testid='delete-button'
+          onClick={handleDelete}
         >
             DELETE
         </Button>
@@ -60,6 +98,8 @@ const NutritionList = () => {
       <NutritionTable
         selectedCount={selectedCount}
         onSelectedCountChange={setSelectedCount}
+        selectedDesserts={selectedDesserts}
+        setSelectedDesserts={setSelectedDesserts}
       />
       {showDialog && <Dialog
         toggler={toggler}

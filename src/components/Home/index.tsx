@@ -1,9 +1,14 @@
+import {
+  gql,
+  useMutation,
+} from '@apollo/client';
 import React, {
-   MouseEvent,
+  MouseEvent,
 } from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
 import NutritionList from '../NutritionList';
+import useContextEntities from '../../context/mainContextEntities';
 
 const HomeStyle = styled.div`
 `;
@@ -17,8 +22,27 @@ const HeadingStyle = styled.h1.attrs({
 })``
 
 const Home = () => {
-  const handleReset = (event: MouseEvent) => {
-    console.warn('handleReset', event);
+  const {
+    dispatch
+  } = useContextEntities();
+
+  const [resetData] = useMutation(gql`
+    mutation {
+      reset {
+        message
+        success
+      }
+    }
+  `);
+
+  const handleReset = async () => {
+    console.warn('handleReset');
+    const { errors } = await resetData();
+    if (!errors) {
+      dispatch({
+        type: 'RESET',
+      });
+    }
   };
 
   return(
