@@ -52,6 +52,12 @@ class Dessert {
   constructor() {
     this.data = initialState;
   }
+  addDessert({ dessert }) {
+    DessertSource.ID += 1
+    const id = DessertSource.ID.toString();
+    this.data.push({ id, ...dessert });
+    return { id, ...dessert };
+  }
 
   getAllDesserts() {
     return this.data;
@@ -70,7 +76,23 @@ const dessert = new Dessert();
 const resolvers = {
   Query: {
     desserts: () => dessert.getAllDesserts(),
+    dessert: (parent, { id: dessertId }, context, info) => dessert.getDessertByID({ dessertId }),
   },
+  Mutation: {
+    addDessert: (_, { dessert }) => {
+      console.log('addDessert -> dessert', dessert)
+      return dessert.addDessert({ dessert })
+    },
+    deleteDessert: (_, { id: dessertId }) => {
+      console.log('deleteDessert -> dessertId', dessertId)
+      return dessert.deleteDessert({ dessertId });
+    },
+    deleteDesserts: (_, { dessertIds }) => {
+      console.log('deleteDesserts -> dessertIds', dessertIds)
+      return dessert.deleteDesserts({ dessertIds });
+    },
+    reset: () => dessert.reset(),
+  }
 };
 
 const typeDefs = gql`
@@ -86,6 +108,26 @@ const typeDefs = gql`
   type Query {
     desserts: [Dessert]!
     dessert(id: ID!): Dessert
+  }
+
+  type ResetResponse {
+    success: Boolean!
+    message: String
+  }
+
+  input DessertInput {
+     name: String
+     calories: Int
+     fat: Int
+     carbs: Int
+     protein: Int
+   }
+
+  type Mutation {
+    addDessert(dessert: DessertInput): Dessert
+    deleteDessert(id: ID!): Dessert!
+    deleteDesserts(dessertIds: [ID]!): ResetResponse!
+    reset: ResetResponse
   }
 `;
 
