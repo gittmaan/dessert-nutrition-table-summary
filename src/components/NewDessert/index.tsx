@@ -1,4 +1,8 @@
 import {
+  gql,
+  useMutation,
+} from '@apollo/client';
+import {
   useEffect,
   useState,
 } from 'react';
@@ -36,13 +40,48 @@ const NewDessert = () => {
     dispatch
   } = useContextEntities();
 
+  const [addDessert] = useMutation(gql`
+    mutation addDessert(
+      $name: String!
+      $calories: Int!
+      $fat: Int!
+      $carbs: Int!
+      $protein: Int!
+    ) {
+      addDessert(
+        dessert: {
+          name: $name
+          calories: $calories
+          fat: $fat
+          carbs: $carbs
+          protein: $protein
+        }
+      ) {
+          id
+          name
+          calories
+          fat
+          carbs
+          protein
+      }
+    }
+  `);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     console.warn('handleSubmit called');
     event.preventDefault();
-    dispatch({
-      type: 'DESSERT_ADDED',
-      payload: dessert,
-    })
+    const { data, errors } = await addDessert({
+      variables: {
+        ...dessert,
+      },
+    });
+
+    if (data && !errors) {
+      dispatch({
+        type: 'DESSERT_ADDED',
+        payload: dessert,
+      })
+    }
   };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

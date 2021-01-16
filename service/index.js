@@ -48,13 +48,16 @@ const initialState =  [
 
 class Dessert {
   data = [];
+  static ID = 0;
 
   constructor() {
     this.data = initialState;
+    Dessert.ID = initialState.length;
   }
+
   addDessert({ dessert }) {
-    DessertSource.ID += 1
-    const id = DessertSource.ID.toString();
+    Dessert.ID += 1
+    const id = Dessert.ID.toString();
     this.data.push({ id, ...dessert });
     return { id, ...dessert };
   }
@@ -68,28 +71,27 @@ class Dessert {
       return dessert.id === dessertId;
     });
   }
-
 }
 
-const dessert = new Dessert();
+const dessertObj = new Dessert();
 
 const resolvers = {
   Query: {
-    desserts: () => dessert.getAllDesserts(),
+    desserts: () => dessertObj.getAllDesserts(),
     dessert: (parent, { id: dessertId }, context, info) => dessert.getDessertByID({ dessertId }),
   },
   Mutation: {
     addDessert: (_, { dessert }) => {
       console.log('addDessert -> dessert', dessert)
-      return dessert.addDessert({ dessert })
+      return dessertObj.addDessert({ dessert });
     },
     deleteDessert: (_, { id: dessertId }) => {
       console.log('deleteDessert -> dessertId', dessertId)
-      return dessert.deleteDessert({ dessertId });
+      return dessertObj.deleteDessert({ dessertId });
     },
     deleteDesserts: (_, { dessertIds }) => {
       console.log('deleteDesserts -> dessertIds', dessertIds)
-      return dessert.deleteDesserts({ dessertIds });
+      return dessertObj.deleteDesserts({ dessertIds });
     },
     reset: () => dessert.reset(),
   }
