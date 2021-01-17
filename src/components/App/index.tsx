@@ -10,7 +10,7 @@ import Main from '../Main/Main';
 import '../App.css';
 
 const apolloClient = new ApolloClient({
-    uri: 'http://tryambake.com:4000/',
+    uri: 'http://nutritionls.tryambake.com:4000/',
     cache: new InMemoryCache(),
 });
 
