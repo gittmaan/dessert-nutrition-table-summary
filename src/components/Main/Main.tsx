@@ -5,6 +5,7 @@ import React, {
 import {
   BrowserRouter as Router,
   Route,
+  Switch,
 } from 'react-router-dom';
 import styled from 'styled-components';
 import {
@@ -14,6 +15,7 @@ import {
 
 import MainContext from '../../context/MainContext';
 import Home from '../Home';
+import NotFound from '../NotFound';
 import {
   initialState,
   reducer,
@@ -62,7 +64,10 @@ const Main = () => {
       <MainContext.Provider value={{ state, dispatch }}>
         <SubStyle>
           <Router>
-            <Route path="/" exact component={Home} />
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route component={NotFound} />
+            </Switch>
           </Router>
         </SubStyle>
       </MainContext.Provider>

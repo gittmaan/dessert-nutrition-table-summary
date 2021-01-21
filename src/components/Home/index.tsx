@@ -2,9 +2,7 @@ import {
   gql,
   useMutation,
 } from '@apollo/client';
-import React, {
-  MouseEvent,
-} from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
 import NutritionList from '../NutritionList';
